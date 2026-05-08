@@ -8,7 +8,7 @@ BASE_URL = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets"
 OUTPUT_PATH = Path("data/processed/openagenda_events.csv")
 
 
-def fetch_events(limit: int = 100) -> list[dict]:
+def fetch_events(limit: int = 500) -> list[dict]:
     url = f"{BASE_URL}/{DATASET_ID}/records"
 
     params = {
@@ -25,6 +25,22 @@ def fetch_events(limit: int = 100) -> list[dict]:
 
 def clean_events(events: list[dict]) -> pd.DataFrame:
     df = pd.DataFrame(events)
+
+    # Conversion en datetime avec timezone UTC
+    df["firstdate_begin"] = pd.to_datetime(
+        df["firstdate_begin"],
+        errors="coerce",
+        utc=True,
+    )
+
+    # Date actuelle avec timezone UTC
+    now = pd.Timestamp.now(tz="UTC")
+
+    # Il y a 1 an
+    one_year_ago = now - pd.Timedelta(days=365)
+
+    # Garder uniquement les événements de moins d'un an
+    df = df[df["firstdate_begin"] >= one_year_ago]
 
     columns_to_keep = [
         "uid",

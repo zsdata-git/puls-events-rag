@@ -41,3 +41,21 @@ def test_text_for_rag_is_not_empty():
 def test_events_are_from_val_de_marne():
     df = pd.read_csv(DATA_PATH)
     assert (df["location_department"] == "Val-de-Marne").all()
+
+
+def test_events_are_recent():
+    import pandas as pd
+
+    df = pd.read_csv(DATA_PATH)
+
+    # Conversion avec timezone UTC (IMPORTANT)
+    df["firstdate_begin"] = pd.to_datetime(
+        df["firstdate_begin"],
+        utc=True,
+        errors="coerce"
+    )
+
+    now = pd.Timestamp.now(tz="UTC")
+    one_year_ago = now - pd.Timedelta(days=365)
+
+    assert (df["firstdate_begin"] >= one_year_ago).all()
