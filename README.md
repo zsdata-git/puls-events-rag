@@ -89,7 +89,7 @@ http://127.0.0.1:8000
 Documentation interactive (Swagger) :
 http://127.0.0.1:8000/docs
 
-+ Endpoints disponibles
+### Endpoints disponibles
 **GET /**
 
 Vérifie que l’API fonctionne.
@@ -119,7 +119,7 @@ Réponse :
 Reconstruit la base vectorielle FAISS à partir des données OpenAgenda.
 
 
-Test de l’API
+### Test de l’API
 
 Un script de test est disponible :
 ```bash
@@ -131,7 +131,7 @@ Ce script :
 - vérifie le endpoint /health
 - envoie une requête au endpoint /ask
 
-✅ Résultat
+### Résultat
 
 Une API REST locale permettant :
 
