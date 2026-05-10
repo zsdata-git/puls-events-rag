@@ -72,3 +72,69 @@ Tests effectués :
 - Requête sur attribut de gratuité : résultats exploitables, mais dépendants de la qualité des champs descriptifs OpenAgenda.
 
 Conclusion : la chaîne RAG fonctionne. Les réponses sont construites à partir des documents récupérés dans FAISS, puis reformulées en langage naturel par le modèle Mistral. La qualité dépend principalement de la complétude des métadonnées OpenAgenda. 
+
+## Étape 5 — API REST avec FastAPI
+
+Le système RAG est maintenant exposé via une API REST permettant d’interroger les événements culturels.
+
+### Lancer l’API
+
+```bash
+uv run uvicorn app.main:app --reload
+```
+
+L’API est accessible à l’adresse :
+http://127.0.0.1:8000
+
+Documentation interactive (Swagger) :
+http://127.0.0.1:8000/docs
+
++ Endpoints disponibles
+**GET /**
+
+Vérifie que l’API fonctionne.
+
+**GET /health**
+
+Retourne le statut de l’API.
+
+**POST /ask**
+
+Permet de poser une question au système RAG.
+
+Exemple :
+{
+  "question": "Je cherche une sortie culturelle à Nogent-sur-Marne"
+}
+
+Réponse :
+{
+  "question": "...",
+  "answer": "...",
+  "sources": [...]
+}
+
+**POST /rebuild**
+
+Reconstruit la base vectorielle FAISS à partir des données OpenAgenda.
+
+
+Test de l’API
+
+Un script de test est disponible :
+```bash
+uv run python scripts/api_test.py
+```
+
+Ce script :
+
+- vérifie le endpoint /health
+- envoie une requête au endpoint /ask
+
+✅ Résultat
+
+Une API REST locale permettant :
+
+d’interroger un chatbot RAG
+d’obtenir des recommandations d’événements
+de reconstruire dynamiquement l’index FAISS
