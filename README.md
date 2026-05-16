@@ -90,15 +90,15 @@ Documentation interactive (Swagger) :
 http://127.0.0.1:8000/docs
 
 ### Endpoints disponibles
-**GET /**
+- **GET /**
 
 Vérifie que l’API fonctionne.
 
-**GET /health**
+- **GET /health**
 
 Retourne le statut de l’API.
 
-**POST /ask**
+- **POST /ask**
 
 Permet de poser une question au système RAG.
 
@@ -114,7 +114,7 @@ Réponse :
   "sources": [...]
 }
 
-**POST /rebuild**
+- **POST /rebuild**
 
 Reconstruit la base vectorielle FAISS à partir des données OpenAgenda.
 
@@ -135,6 +135,33 @@ Ce script :
 
 Une API REST locale permettant :
 
-d’interroger un chatbot RAG
-d’obtenir des recommandations d’événements
-de reconstruire dynamiquement l’index FAISS
+- d’interroger un chatbot RAG
+- d’obtenir des recommandations d’événements
+- de reconstruire dynamiquement l’index FAISS
+
+### Évaluation automatique du RAG
+
+Un script scripts/evaluate_rag.py permet d’évaluer automatiquement le comportement du système RAG sur plusieurs questions de test.
+
+Métriques utilisées :
+
+- keyword_score
+    Vérifie si les mots-clés attendus apparaissent dans la réponse générée.
+- source_coverage_score
+    Vérifie que les documents récupérés contiennent les métadonnées essentielles : titre, ville, date, URL
+- sources_count
+    Nombre de documents récupérés depuis FAISS.
+
+Les résultats sont sauvegardés dans :
+data/processed/rag_evaluation_results.csv
+
+*À propos de Ragas*
+
+La bibliothèque ragas a été explorée afin d’évaluer automatiquement :
+
+- la fidélité des réponses au contexte (faithfulness),
+- la pertinence des réponses générées.
+
+Cependant, une incompatibilité de dépendances entre ragas, instructor et mistralai a limité son intégration complète dans ce POC.
+
+Une solution d’évaluation custom a donc été mise en place afin de conserver un pipeline stable et fonctionnel.

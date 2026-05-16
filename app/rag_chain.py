@@ -79,7 +79,7 @@ Contexte récupéré depuis FAISS :
     )
 
     llm = ChatMistralAI(
-        model="mistral-small-latest",
+        model="open-mistral-nemo-2407", #model= "mistral-small-latest"
         temperature=0.2,
     )
 
@@ -94,6 +94,7 @@ Contexte récupéré depuis FAISS :
     return {
         "question": question,
         "answer": response.content,
+        "contexts": [doc.page_content for doc in docs],
         "sources": [
             {
                 "title": doc.metadata.get("title"),
