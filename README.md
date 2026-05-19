@@ -165,3 +165,25 @@ La bibliothèque ragas a été explorée afin d’évaluer automatiquement :
 Cependant, une incompatibilité de dépendances entre ragas, instructor et mistralai a limité son intégration complète dans ce POC.
 
 Une solution d’évaluation custom a donc été mise en place afin de conserver un pipeline stable et fonctionnel.
+
+
+## Étape 6 — Conteneurisation Docker
+
+Le projet peut être exécuté localement dans un conteneur Docker.
+
+### Build de l’image
+
+```bash
+docker build -t puls-events-rag .
+```
+
+### Lancement du conteneur
+
+```bash
+docker run --env-file .env -p 8000:8000 puls-events-rag
+```
+
+### Accès à l'API 
+
+http://localhost:8000/docs
+
